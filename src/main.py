@@ -1,5 +1,3 @@
-# main.py: Initialisiert das Hauptfenster und startet die Qt-Anwendung
-
 import sys
 from PyQt5.QtWidgets import QApplication
 from frontend.main_window import MainWindow
