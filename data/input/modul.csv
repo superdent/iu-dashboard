@@ -1,0 +1,34 @@
+modul_id;modul_kuerzel;modul_name;semester_id;ECTS_Punkte;status;pruefungsdatum
+1;DLBDSEAIS1_D;Artificial Intelligence;1;5;bestanden;11.05.2024
+2;DLBWIRITT;Einführung in das wissenschaftliche Arbeiten für IT und Technik;1;5;bestanden;15.04.2024
+3;DLBDSIPWP_D;Einführung in die Programmierung mit Python;1;5;bestanden;25.05.2024
+4;DLBBIMD;Mathematik: Analysis;1;5;bestanden;09.03.2024
+5;DLBKA;Kollaboratives Arbeiten;1;5;bestanden;29.01.2024
+6;DLBDSSPDS_D;Statistik - Wahrscheinlichkeit und deskriptive Statistik;1;5;offen;
+7;DLBDSOOFPP_D;Objektorientierte und funktionale Programmierung mit Python;2;5;offen;
+8;DLBBIM;Mathematik: Lineare Algebra;2;5;offen;
+9;DLBIHK;Interkulturelle und ethische Handlungskompetenzen;2;5;offen;
+10;DLBDSSIS1_D;Statistik - Schließende Statistik;2;5;offen;
+11;DLBDSCC_D;Cloud Computing;2;5;bestanden;29.01.2024
+12;DLBSEPCP_D;Cloud Programming;2;5;bestanden;29.01.2024
+13;DLBDSMLSL_D;Maschinelles Lernen - Supervised Learning;3;5;offen;
+14;DLBDSMLUSL_D;Maschinelles Lernen - Unsupervised Learning und Feature Engineering;3;5;offen;
+15;DLBAIICV_D;Einführung in Computer Vision;3;5;offen;
+16;DLBAIIRL_D;Einführung in das Reinforcement Learning;3;5;offen;
+17;DLBAIPCV_D;Projekt: Computer Vision;3;5;offen;
+18;DLBDSNNDL_D;Neuronale Netze und Deep Learning;3;5;offen;
+19;LBAIINLP_D;Einführung in NLP;4;5;offen;
+20;DLBAIPNLP_D;Projekt: NLP;4;5;offen;
+21;DLBDSDSSE_D;Data Science Software Engineering;4;5;offen;
+22;DLBDSMTP_D;Projekt: Vom Modell zum Produktvertrieb;4;5;offen;
+23;DLBINGEDS;Einführung in Datenschutz und IT-Sicherheit;4;5;bestanden;29.01.2024
+24;DLBDSSECDS_D;Seminar: Ethische Fragen der Data Science;4;5;offen;
+25;DLBMIUEX1;User Experience;5;5;offen;
+26;DLBMIUEX2;UX-Projekt;5;5;offen;
+27;DLBAIPEAI_D;Projekt: Edge AI;5;5;offen;
+28;DLBROIR_D;Einführung in die Robotik;5;5;offen;
+29;DLBDBAPM;Agiles Projektmanagement;5;5;bestanden;29.01.2024
+30;DLBROIR-01_D;Einführung in die Robotik;5;5;offen;
+31;DLBMIUEX1-01;User Experience;5;5;offen;
+32;IDBS01;Datenmodellierung und Datenbanksysteme;6;5;bestanden;29.01.2024
+33;IWBI01;Business Intelligence;6;5;bestanden;29.01.2024
