@@ -1,41 +1,42 @@
-from PyQt5.QtWidgets import QMainWindow, QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QApplication
-from PyQt5.QtGui import QScreen
-from frontend.bar_chart_widget import BarChartWidget
-from frontend.metric_widget import MetricWidget, SingleLineWidget
+import sys
+from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QWidget
+from backend.studium_data_loader import StudiumDataLoader
+from frontend.notenschnitt_widget import NotenschnittWidget
+import logging
 
-class MainWindow(QMainWindow):
-    def __init__(self):
+class MainApp(QMainWindow):
+    def __init__(self, studien):
         super().__init__()
-        self.setWindowTitle('Dashboard')
 
-        screen = QScreen.availableGeometry(QApplication.primaryScreen())
-        width, height = screen.width(), screen.height()
-        self.resize(int(width * 0.8), int(height * 0.8))
 
-        self.central_widget = QWidget()
-        self.setCentralWidget(self.central_widget)
+        # Fenster-Konfiguration
+        self.setWindowTitle("Studien Dashboard")
+        self.setGeometry(100, 100, 800, 600)
 
-        main_layout = QVBoxLayout()
-        top_layout = QGridLayout()
-        
-        # Kennzahl-Kachel hinzufügen
-        metric_widget = MetricWidget()
-        top_layout.addWidget(metric_widget, 0, 0)
+        # Layout und Widgets
+        self.layout = QVBoxLayout()
 
-        # Einfache Textzeile-Kachel hinzufügen
-        single_line_widget = SingleLineWidget()
-        top_layout.addWidget(single_line_widget, 0, 1)
-        
-        # Platzhalter für zusätzliche Widgets
-        placeholder_widget1 = QWidget()
-        top_layout.addWidget(placeholder_widget1, 0, 2)
-        placeholder_widget2 = QWidget()
-        top_layout.addWidget(placeholder_widget2, 0, 2)
+        studium = studien[0]  # Beispiel: Nimm das erste Studium
+        self.notenschnitt_widget = NotenschnittWidget(studium)  # Neues Widget erstellen
+        self.layout.addWidget(self.notenschnitt_widget)  # Neues Widget zum Layout hinzufügen
 
-        main_layout.addLayout(top_layout)
-        
-        # Adding the BarChartWidget to the layout
-        plot_widget = BarChartWidget(self)
-        main_layout.addWidget(plot_widget)
+        # Zentrales Widget
+        central_widget = QWidget()
+        central_widget.setLayout(self.layout)
+        self.setCentralWidget(central_widget)
 
-        self.central_widget.setLayout(main_layout)
+    def load_data(self):
+        try:
+            # Daten laden
+            self.studium_data_loader.load_data()
+            self.label.setText("Daten erfolgreich geladen!")
+            logging.info("Daten erfolgreich geladen")
+        except Exception as e:
+            self.label.setText("Fehler beim Laden der Daten")
+            logging.error(f"Fehler beim Laden der Daten: {e}")
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    main_window = MainApp()
+    main_window.show()
+    sys.exit(app.exec_())
