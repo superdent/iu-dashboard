@@ -25,7 +25,7 @@ class NotenschnittWidget(QWidget):
         # Label zur Anzeige der Note
         self.label_note = QLabel(f"{durchschnittsnote:.2f}")
         self.label_note.setAlignment(Qt.AlignCenter)
-        self.label_note.setStyleSheet("font-size: 72px; font-weight: bold; color: white;")  # Text in weiß
+        self.label_note.setStyleSheet("font-size: 72px; font-weight: bold; color: black;")  
         frame_layout.addWidget(self.label_note)
 
         # Spacer hinzufügen, um den Text nach unten zu verschieben
@@ -34,7 +34,7 @@ class NotenschnittWidget(QWidget):
         # Label zur Anzeige der Durchschnittsnote
         self.label_title = QLabel("⌀-Note")
         self.label_title.setAlignment(Qt.AlignBottom | Qt.AlignCenter)
-        self.label_title.setStyleSheet("font-size: 24px; color: white;")  # Text in weiß
+        self.label_title.setStyleSheet("font-size: 24px; color: black;")
         frame_layout.addWidget(self.label_title)
 
         # Setze das Rahmenlayout
@@ -55,6 +55,6 @@ class NotenschnittWidget(QWidget):
     def set_note_color(self, note, schwellwert):
         """Setzt die Hintergrundfarbe des Rahmens abhängig vom Wert und dem Schwellwert."""
         if note <= schwellwert:
-            self.frame.setStyleSheet("background-color: green;")  # Hintergrund in Grün
+            self.frame.setStyleSheet("background-color: #D9F2D0; border-radius: 15px;")  # Hintergrund in Grün
         else:
-            self.frame.setStyleSheet("background-color: red;")  # Hintergrund in Rot
+            self.frame.setStyleSheet("background-color: #F5C5AD; border-radius: 15px;")  # Hintergrund in Rot

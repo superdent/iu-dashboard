@@ -45,12 +45,26 @@ class StudiumDataLoader:
         else:
             logging.warning(f"Datei nicht gefunden: {file_path}. Überspringe den Import.")
 
+    def _convert_value(self, value, data_type):
+        """Konvertiert den Wert in den angegebenen Datentyp."""
+        if data_type == int:
+            return int(value)
+        elif data_type == float:
+            return float(value)
+        elif data_type == str:
+            return str(value)
+        else:
+            raise ValueError(f"Unsupported data type: {data_type}")
+
     def _load_studium(self, file_path):
         """Lädt die Studium-Daten."""
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
-                studium = Studium(row['studium_id'], row['studium_name'])
+                studium = Studium(
+                    self._convert_value(row['studium_id'], int),
+                    self._convert_value(row['studium_name'], str)
+                )
                 self.studien.append(studium)
 
     def _load_module(self, file_path):
@@ -58,7 +72,14 @@ class StudiumDataLoader:
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
-                modul = Modul(row['modul_id'], row['modul_kuerzel'], row['modul_name'], row['semester_id'], row['ECTS_Punkte'], row['status'])
+                modul = Modul(
+                    self._convert_value(row['modul_id'], int),
+                    self._convert_value(row['modul_kuerzel'], str),
+                    self._convert_value(row['modul_name'], str),
+                    self._convert_value(row['semester_id'], int),
+                    self._convert_value(row['ECTS_Punkte'], float),
+                    self._convert_value(row['status'], str)
+                )
                 self.module.append(modul)
 
     def _load_semester(self, file_path):
@@ -66,7 +87,13 @@ class StudiumDataLoader:
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
-                semester = Semester(row['semester_id'], row['semester_no'], row['studium_id'], row['start_datum'], row['end_datum'])
+                semester = Semester(
+                    self._convert_value(row['semester_id'], int),
+                    self._convert_value(row['semester_no'], int),
+                    self._convert_value(row['studium_id'], int),
+                    self._convert_value(row['start_datum'], str),
+                    self._convert_value(row['end_datum'], str)
+                )
                 self.semester.append(semester)
 
     def _load_pruefungen(self, file_path):
@@ -74,7 +101,13 @@ class StudiumDataLoader:
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
-                pruefung = Pruefung(row['id'], row['modul_id'], row['pruef_art'], row['pruef_datum'], float(row['note']))
+                pruefung = Pruefung(
+                    self._convert_value(row['id'], int),
+                    self._convert_value(row['modul_id'], int),
+                    self._convert_value(row['pruef_art'], str),
+                    self._convert_value(row['pruef_datum'], str),
+                    self._convert_value(row['note'], float)
+                )
                 self.pruefungen.append(pruefung)
 
     def _load_ziele(self, file_path):
@@ -82,7 +115,12 @@ class StudiumDataLoader:
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
-                ziel = StudiumZiel(row['ziel_id'], row['studium_id'], row['ziel_name'], row['ziel_wert'])
+                ziel = StudiumZiel(
+                    self._convert_value(row['ziel_id'], int),
+                    self._convert_value(row['studium_id'], int),
+                    self._convert_value(row['ziel_name'], str),
+                    self._convert_value(row['ziel_wert'], float)
+                )
                 self.ziele.append(ziel)
 
     def _zuordnen_semester_zu_studium(self):

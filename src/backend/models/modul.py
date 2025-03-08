@@ -1,3 +1,8 @@
+BESTANDEN = "bestanden"
+NICHT_BESTANDEN = "nicht bestanden"
+NICHT_BEGONNEN = "nicht begonnen"
+IN_ARBEIT = "in Arbeit"
+
 class Modul:
     def __init__(self, modul_id, modul_kuerzel, modul_name, semester_id, ects_punkte, status):
         self.modul_id = modul_id

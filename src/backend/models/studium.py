@@ -1,3 +1,5 @@
+from backend.models.modul import * 
+
 class Studium:
     def __init__(self, studium_id, studium_name):
         self.studium_id = studium_id
@@ -7,10 +9,9 @@ class Studium:
         self.module = []  # Liste von Modulen, die dem Studium zugeordnet sind
 
     def berechne_durchschnittsnote(self):
-        # Liste für die besten Noten pro Modul
+        # Liste für die besten Noten pro Modul, wird später für den Durchschnitt benötigt
         beste_noten = []
 
-        # Für jedes Modul
         for modul in self.module:
             noten = [pruefung.note for pruefung in modul.pruefungen if pruefung.note is not None]
             
@@ -26,3 +27,6 @@ class Studium:
         # Durchschnitt berechnen und auf 2 Dezimalstellen runden
         durchschnitt = sum(beste_noten) / len(beste_noten)
         return round(durchschnitt, 2)
+    
+    def berechne_credit_points(self):
+        return sum([modul.ects_punkte for modul in self.module if modul.status == BESTANDEN])
