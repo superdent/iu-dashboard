@@ -2,10 +2,10 @@ from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, Q
 from PyQt5.QtCore import Qt
 
 class CreditPointsWidget(QWidget):
-    def __init__(self, studium):
+    def __init__(self, study_program):
         super().__init__()
 
-        credit_points = int(studium.berechne_credit_points())
+        credit_points = int(study_program.calculate_credit_points())
         
         # Widget Layout
         self.layout = QVBoxLayout()
@@ -46,6 +46,6 @@ class CreditPointsWidget(QWidget):
         # Styling
         self.setStyleSheet("padding: 10px;")
 
-    def update_credit_points(self, ects, schwellwert):
+    def update_credit_points(self, ects, target_value):
         """Aktualisiert die angezeigten ECTS."""
         self.label_ects.setText(f"{ects:d}")

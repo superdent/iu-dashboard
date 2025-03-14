@@ -2,11 +2,11 @@ from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, Q
 from PyQt5.QtCore import Qt
 
 class NotenschnittWidget(QWidget):
-    def __init__(self, studium):
+    def __init__(self, study_program):
         super().__init__()
 
-        durchschnittsnote = studium.berechne_durchschnittsnote()
-        schwellwert = 2.5
+        average_grade = study_program.calculate_average_grade()
+        target = 2.5
 
         # Widget Layout
         self.layout = QVBoxLayout()
@@ -23,7 +23,7 @@ class NotenschnittWidget(QWidget):
         frame_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         # Label zur Anzeige der Note
-        self.label_note = QLabel(f"{durchschnittsnote:.2f}")
+        self.label_note = QLabel(f"{average_grade:.2f}")
         self.label_note.setAlignment(Qt.AlignCenter)
         self.label_note.setStyleSheet("font-size: 72px; font-weight: bold; color: black;")  
         frame_layout.addWidget(self.label_note)
@@ -42,19 +42,19 @@ class NotenschnittWidget(QWidget):
         self.setLayout(self.layout)
 
         # Farbe des Rahmens basierend auf der Note und dem Schwellwert setzen
-        self.set_note_color(durchschnittsnote, schwellwert)
+        self.set_note_color(average_grade, target)
 
         # Styling
         self.setStyleSheet("padding: 10px;")
 
-    def update_note(self, neue_note, schwellwert):
+    def update_grade(self, new_grade, target):
         """Aktualisiert die angezeigte Durchschnittsnote."""
-        self.label_note.setText(f"{neue_note:.2f}")
-        self.set_note_color(neue_note, schwellwert)
+        self.label_note.setText(f"{new_grade:.2f}")
+        self.set_note_color(new_grade, target)
 
-    def set_note_color(self, note, schwellwert):
+    def set_note_color(self, grade, target):
         """Setzt die Hintergrundfarbe des Rahmens abhängig vom Wert und dem Schwellwert."""
-        if note <= schwellwert:
+        if grade <= target:
             self.frame.setStyleSheet("background-color: #D9F2D0; border-radius: 15px;")  # Hintergrund in Grün
         else:
             self.frame.setStyleSheet("background-color: #F5C5AD; border-radius: 15px;")  # Hintergrund in Rot

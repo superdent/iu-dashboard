@@ -1,5 +1,5 @@
 import unittest
-from backend.studium_data_loader import StudiumDataLoader
+from backend.study_data_loader import StudiumDataLoader
 
 class TestStudiumDataLoader(unittest.TestCase):
     def setUp(self):

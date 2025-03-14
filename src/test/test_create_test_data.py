@@ -1,6 +1,6 @@
-from backend.models.studium import Studium
-from backend.models.modul import Modul
-from backend.models.pruefung import Pruefung
+from backend.models.study_program import Studium
+from backend.models.module import Modul
+from backend.models.exam import Pruefung
 
 class TestCreateTestData:
 

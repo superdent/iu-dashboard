@@ -1,4 +1,4 @@
-from backend.studium_data_loader import StudiumDataLoader
+from backend.study_data_loader import StudyDataLoader
 from frontend.main_window import MainApp
 from PyQt5.QtWidgets import QApplication
 import logging
@@ -6,17 +6,17 @@ import sys
 
 class Main:
     def __init__(self):
-        self.studium_data_loader = StudiumDataLoader()
+        self.study_data_loader = StudyDataLoader()
 
     def run(self):
         # Daten laden
-        self.studium_data_loader.load_data()
-        studien = self.studium_data_loader.get_studien()
+        self.study_data_loader.load_data()
+        study_programs = self.study_data_loader.get_study_programs()
         logging.info("Daten laden beendet")
 
         # Start der GUI
         app = QApplication(sys.argv)
-        main_window = MainApp(studien)
+        main_window = MainApp(study_programs)
         main_window.show()
         sys.exit(app.exec_())
 
