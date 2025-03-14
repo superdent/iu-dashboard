@@ -1,12 +1,12 @@
 import unittest
-from backend.models.study_program import Studium  
+from backend.models.study_program import StudyProgram  
 from test_create_test_data import TestCreateTestData
 
-class Pruefung:
-    def __init__(self, note):
-        self.note = note
+class Exam:
+    def __init__(self, grade):
+        self.note = grade
 
-class Modul:
+class Module:
     def __init__(self):
         self.pruefungen = []
 
@@ -23,10 +23,10 @@ class TestStudiumDurchschnitt(unittest.TestCase):
         )
 
 
-    def test_berechne_durchschnittsnote(self):
+    def test_calculate_average_grade(self):
         # Durchschnitt berechnen und überprüfen
-        durchschnitt = self.studium.berechne_durchschnittsnote()
-        self.assertEqual(durchschnitt, 1.97)  # Erwarteter Durchschnitt
+        average_grade = self.studium.calculate_average_grade()
+        self.assertEqual(average_grade, 1.97)  # Erwarteter Durchschnitt
 
 if __name__ == "__main__":
     unittest.main()

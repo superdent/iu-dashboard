@@ -1,24 +1,24 @@
-from backend.models.study_program import Studium
-from backend.models.module import Modul
-from backend.models.exam import Pruefung
+from backend.models.study_program import StudyProgram
+from backend.models.module import Module
+from backend.models.exam import Exam
 
 class TestCreateTestData:
 
     @staticmethod
-    def erstelle_pruefung(id, modul_id, pruef_art, pruef_datum, note):
-        pruefung = Pruefung(id, modul_id, pruef_art, pruef_datum, note)
-        return pruefung
+    def erstelle_exam(id, modul_id, pruef_art, pruef_datum, note):
+        exam = Exam(id, modul_id, pruef_art, pruef_datum, note)
+        return exam
 
     @staticmethod
-    def erstelle_modul(id, modul_kuerzel, modul_name, semester_id, ects_punkte, status, pruefungen):
-        modul = Modul(id, modul_kuerzel, modul_name, semester_id, ects_punkte, status)
-        for pruefung_daten in pruefungen:
-            modul.pruefungen.append(TestCreateTestData.erstelle_pruefung(*pruefung_daten))
-        return modul
+    def erstelle_modul(id, module_code, module_name, semester_id, ects_points, state, exams):
+        module = Module(id, module_code, module_name, semester_id, ects_points, state)
+        for exam_daten in exams:
+            module.exams.append(TestCreateTestData.erstelle_exam(*exam_daten))
+        return module
 
     @staticmethod
-    def erstelle_studium(studium_id, studium_name, module):
-        studium = Studium(studium_id, studium_name)
-        for modul_daten in module:
-            studium.module.append(TestCreateTestData.erstelle_modul(*modul_daten))
-        return studium
+    def erstelle_studium(study_program_id, study_program_name, modules):
+        study_program = StudyProgram(study_program_id, study_program_name)
+        for module_data in modules:
+            study_program.modules.append(TestCreateTestData.erstelle_modul(*module_data))
+        return study_program

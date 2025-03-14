@@ -72,15 +72,15 @@ class StudyDataLoader:
         with open(file_path, 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
-                modul = Module(
-                    self._convert_value(row['module_id'], int),
-                    self._convert_value(row['module_code'], str),
-                    self._convert_value(row['module_name'], str),
+                module = Module(
+                    self._convert_value(row['modul_id'], int),
+                    self._convert_value(row['modul_kuerzel'], str),
+                    self._convert_value(row['modul_name'], str),
                     self._convert_value(row['semester_id'], int),
-                    self._convert_value(row['ECTS_points'], float),
-                    self._convert_value(row['state'], str)
+                    self._convert_value(row['ECTS_Punkte'], float),
+                    self._convert_value(row['status'], str)
                 )
-                self.module.append(modul)
+                self.modules.append(module)
 
     def _load_semester(self, file_path):
         """Lädt die Semester-Daten."""
@@ -90,9 +90,9 @@ class StudyDataLoader:
                 semester = Semester(
                     self._convert_value(row['semester_id'], int),
                     self._convert_value(row['semester_no'], int),
-                    self._convert_value(row['study_program_id'], int),
-                    self._convert_value(row['start_date'], str),
-                    self._convert_value(row['end_date'], str)
+                    self._convert_value(row['studium_id'], int),
+                    self._convert_value(row['start_datum'], str),
+                    self._convert_value(row['end_datum'], str)
                 )
                 self.semester.append(semester)
 
@@ -103,10 +103,10 @@ class StudyDataLoader:
             for row in reader:
                 exam = Exam(
                     self._convert_value(row['id'], int),
-                    self._convert_value(row['module_id'], int),
-                    self._convert_value(row['type_of_exam'], str),
-                    self._convert_value(row['exam_date'], str),
-                    self._convert_value(row['grade'], float)
+                    self._convert_value(row['modul_id'], int),
+                    self._convert_value(row['pruef_art'], str),
+                    self._convert_value(row['pruef_datum'], str),
+                    self._convert_value(row['note'], float)
                 )
                 self.exams.append(exam)
 
@@ -116,10 +116,10 @@ class StudyDataLoader:
             reader = csv.DictReader(file, delimiter=';')
             for row in reader:
                 target = StudyTarget(
-                    self._convert_value(row['target_id'], int),
-                    self._convert_value(row['study_program_id'], int),
-                    self._convert_value(row['target_name'], str),
-                    self._convert_value(row['target_wert'], float)
+                    self._convert_value(row['ziel_id'], int),
+                    self._convert_value(row['studium_id'], int),
+                    self._convert_value(row['ziel_name'], str),
+                    self._convert_value(row['ziel_wert'], float)
                 )
                 self.targets.append(target)
 
