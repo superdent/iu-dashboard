@@ -2,7 +2,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy
 
 
-class NotenschnittWidget(QWidget):
+class AverageGradeWidget(QWidget):
     def __init__(self, average_grade):
         super().__init__()
 

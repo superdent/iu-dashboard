@@ -41,8 +41,8 @@ class CreditPointsWidget(QWidget):
         self.layout.addWidget(self.frame)
         self.setLayout(self.layout)
 
-        # Farbe des Rahmens
-        self.frame.setStyleSheet("background-color: #E9EBCB; border-radius: 15px;")  # Hintergrund in Grün
+        # Hintergrund in Grün
+        self.frame.setStyleSheet("background-color: #FFF9C4; border-radius: 15px;")
 
         # Styling
         self.setStyleSheet("padding: 10px;")

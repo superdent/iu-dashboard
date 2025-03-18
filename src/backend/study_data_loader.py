@@ -1,6 +1,7 @@
 import csv
 import logging
 import os
+from datetime import datetime
 
 from backend.models.exam import Exam
 from backend.models.module import Module
@@ -49,12 +50,16 @@ class StudyDataLoader:
 
     def _convert_value(self, value, data_type):
         """Konvertiert den Wert in den angegebenen Datentyp."""
+        if value in (None, "", " "):
+            return None
         if data_type == int:
             return int(value)
         elif data_type == float:
             return float(value)
         elif data_type == str:
             return str(value)
+        elif data_type == datetime:
+            datetime.strptime(value, '%d.%m.%Y').date()
         else:
             raise ValueError(f"Unsupported data type: {data_type}")
 
@@ -107,7 +112,7 @@ class StudyDataLoader:
                     self._convert_value(row['id'], int),
                     self._convert_value(row['modul_id'], int),
                     self._convert_value(row['pruef_art'], str),
-                    self._convert_value(row['pruef_datum'], str),
+                    self._convert_value(row['pruef_datum'], datetime),
                     self._convert_value(row['note'], float)
                 )
                 self.exams.append(exam)
