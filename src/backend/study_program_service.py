@@ -2,7 +2,8 @@ from backend.models.study_program import StudyProgram
 from backend.models.module import *
 
 from datetime import date
-from typing import Optional, Tuple
+from typing import Optional, Tuple, Dict
+
 
 class StudyProgramService:
     @staticmethod
@@ -33,3 +34,28 @@ class StudyProgramService:
     def calculate_credit_points(study_program: StudyProgram) -> int:
         return sum(module.ects_points for module in study_program.modules if module.state == BESTANDEN)
 
+    @staticmethod
+    def get_modules_per_semester(study_program: StudyProgram) -> Dict[int, Tuple[int, int]]:
+        """
+        Gibt ein Dictionary zurück, das die Anzahl bestandener und nicht bestandener Module pro Semester enthält.
+        Format: {semester_id: (bestandene, nicht bestandene)}
+        """
+        semester_data = {}
+
+        for module in study_program.modules:
+            semester_id = module.semester_id
+            is_completed = module.state == BESTANDEN
+
+            if semester_id not in semester_data:
+                semester_data[semester_id] = (0, 0)
+
+            completed, not_completed = semester_data[semester_id]
+
+            if is_completed:
+                completed += 1
+            else:
+                not_completed += 1
+
+            semester_data[semester_id] = (completed, not_completed)
+
+        return semester_data
