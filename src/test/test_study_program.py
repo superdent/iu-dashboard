@@ -1,6 +1,7 @@
 import unittest
-from backend.models.study_program import StudyProgram  
+
 from test_create_test_data import TestCreateTestData
+
 
 class Exam:
     def __init__(self, grade):

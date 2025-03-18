@@ -1,8 +1,11 @@
-from backend.study_data_loader import StudyDataLoader
-from frontend.main_window import MainApp
-from PyQt5.QtWidgets import QApplication
 import logging
 import sys
+
+from PyQt5.QtWidgets import QApplication
+
+from backend.study_data_loader import StudyDataLoader
+from frontend.main_window import MainApp
+
 
 class Main:
     def __init__(self):

@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy
+
 
 class NotenschnittWidget(QWidget):
-    def __init__(self, study_program):
+    def __init__(self, average_grade):
         super().__init__()
 
-        average_grade = study_program.calculate_average_grade()
         target = 2.5
 
         # Widget Layout

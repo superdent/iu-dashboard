@@ -1,12 +1,14 @@
 import csv
-import os
 import logging
-from config import STUDIUM_FILE, MODULE_FILE, SEMESTER_FILE, PRUEFUNG_FILE, ZIEL_FILE
-from backend.models.study_program import StudyProgram
+import os
+
+from backend.models.exam import Exam
 from backend.models.module import Module
 from backend.models.semester import Semester
-from backend.models.exam import Exam
+from backend.models.study_program import StudyProgram
 from backend.models.study_target import StudyTarget
+from config import STUDIUM_FILE, MODULE_FILE, SEMESTER_FILE, PRUEFUNG_FILE, ZIEL_FILE
+
 
 class StudyDataLoader:
     def __init__(self):

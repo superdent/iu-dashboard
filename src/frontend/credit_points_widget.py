@@ -1,12 +1,13 @@
-from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy
 from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, QSizePolicy
+
 
 class CreditPointsWidget(QWidget):
-    def __init__(self, study_program):
+    def __init__(self, credit_points):
         super().__init__()
 
-        credit_points = int(study_program.calculate_credit_points())
-        
+        credit_points=int(credit_points)
+
         # Widget Layout
         self.layout = QVBoxLayout()
 

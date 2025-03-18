@@ -1,5 +1,5 @@
-import os
 import logging
+import os
 
 # Logging konfigurieren
 LOGGING_FORMAT = '%(asctime)s - %(levelname)s - %(message)s'
