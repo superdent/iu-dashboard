@@ -17,21 +17,22 @@ class CompletedModulesWidget(QWidget):
         frame_layout = QVBoxLayout(self.frame)
 
         # Spacer oben
-        frame_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        frame_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed))
 
         # Label für die abgeschlossenen/gesamten Module
         self.label_modules = QLabel(f"{completed_modules}/{total_modules}")
         self.label_modules.setAlignment(Qt.AlignCenter)
-        self.label_modules.setStyleSheet("font-size: 72px; font-weight: bold; color: black;")
+        self.label_modules.setStyleSheet("font-size: 48px; font-weight: bold; color: black;")
         frame_layout.addWidget(self.label_modules)
 
         # Spacer unten
-        frame_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        frame_layout.addSpacerItem(QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         # Label für die Beschreibung
         self.label_description = QLabel("Module abgeschlossen")
         self.label_description.setAlignment(Qt.AlignBottom | Qt.AlignCenter)
-        self.label_description.setStyleSheet("font-size: 24px; color: black;")
+        self.label_description.setStyleSheet("font-size: 18px; color: black;")
+        self.label_description.setWordWrap(True)
         frame_layout.addWidget(self.label_description)
 
         # Setze das Rahmenlayout
@@ -39,7 +40,7 @@ class CompletedModulesWidget(QWidget):
         self.setLayout(self.layout)
 
         # Styling
-        self.setStyleSheet("padding: 10px;")
+        self.setStyleSheet("padding: 5px;")
         self.frame.setStyleSheet("background-color: #D9F2D0; border-radius: 15px;")  # Mintgrün, wie im Noten-Widget
 
     def update_modules(self, completed_modules: int, total_modules: int):

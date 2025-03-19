@@ -34,3 +34,8 @@ class SemesterBarChartWidget(QWidget):
         self.ax.legend()
 
         self.canvas.draw()
+
+    def update_data(self, modules_per_semester: dict):
+        """Aktualisiert das Balkendiagramm mit neuen Daten."""
+        self.create_plot(modules_per_semester)
+

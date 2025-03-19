@@ -20,21 +20,21 @@ class AverageGradeWidget(QWidget):
         frame_layout = QVBoxLayout(self.frame)
 
         # Spacer hinzufügen, um die Note eher mittig zu platzieren
-        frame_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        frame_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Fixed))
 
         # Label zur Anzeige der Note
         self.label_note = QLabel(f"{average_grade:.2f}")
         self.label_note.setAlignment(Qt.AlignCenter)
-        self.label_note.setStyleSheet("font-size: 72px; font-weight: bold; color: black;")  
+        self.label_note.setStyleSheet("font-size: 48px; font-weight: bold; color: black;")
         frame_layout.addWidget(self.label_note)
 
         # Spacer hinzufügen, um den Text nach unten zu verschieben
-        frame_layout.addSpacerItem(QSpacerItem(20, 40, QSizePolicy.Minimum, QSizePolicy.Expanding))
+        frame_layout.addSpacerItem(QSpacerItem(20, 5, QSizePolicy.Minimum, QSizePolicy.Expanding))
 
         # Label zur Anzeige der Durchschnittsnote
         self.label_title = QLabel("⌀-Note")
         self.label_title.setAlignment(Qt.AlignBottom | Qt.AlignCenter)
-        self.label_title.setStyleSheet("font-size: 24px; color: black;")
+        self.label_title.setStyleSheet("font-size: 18px; color: black;")
         frame_layout.addWidget(self.label_title)
 
         # Setze das Rahmenlayout
@@ -45,7 +45,7 @@ class AverageGradeWidget(QWidget):
         self.set_note_color(average_grade, target)
 
         # Styling
-        self.setStyleSheet("padding: 10px;")
+        self.setStyleSheet("padding: 5px;")
 
     def update_grade(self, new_grade, target):
         """Aktualisiert die angezeigte Durchschnittsnote."""

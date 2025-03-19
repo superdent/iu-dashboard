@@ -59,7 +59,7 @@ class StudyDataLoader:
         elif data_type == str:
             return str(value)
         elif data_type == datetime:
-            datetime.strptime(value, '%d.%m.%Y').date()
+            return datetime.strptime(value, '%d.%m.%Y').date()
         else:
             raise ValueError(f"Unsupported data type: {data_type}")
 
@@ -116,6 +116,7 @@ class StudyDataLoader:
                     self._convert_value(row['note'], float)
                 )
                 self.exams.append(exam)
+        print("Geladene Prüfungen:", [(exam.exam_date, exam.module_id) for exam in self.exams])
 
     def _load_targets(self, file_path):
         """Lädt die Studienziele-Daten."""
