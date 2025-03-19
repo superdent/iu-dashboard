@@ -3,10 +3,8 @@ from PyQt5.QtWidgets import QWidget, QLabel, QVBoxLayout, QFrame, QSpacerItem, Q
 
 
 class AverageGradeWidget(QWidget):
-    def __init__(self, average_grade):
+    def __init__(self, average_grade, target):
         super().__init__()
-
-        target = 2.5
 
         # Widget Layout
         self.layout = QVBoxLayout()

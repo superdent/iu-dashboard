@@ -17,3 +17,7 @@ MODULE_FILE = os.path.join(DATA_DIR, 'modul.csv')
 SEMESTER_FILE = os.path.join(DATA_DIR, 'semester.csv')
 PRUEFUNG_FILE = os.path.join(DATA_DIR, 'pruefung.csv')
 ZIEL_FILE = os.path.join(DATA_DIR, 'studiumziel.csv')
+
+# IDs für Studium-Ziele
+ZIEL_ID_DURCHSCHNITTSNOTE = 1
+ZIEL_ID_CREDITPOINTS_SEMESTER = 2

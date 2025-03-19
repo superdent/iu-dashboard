@@ -40,14 +40,14 @@ class MainApp(QMainWindow):
         if hasattr(self, "next_exam_widget"):
             self.next_exam_widget.update_exam(next_exam)
             self.complete_modules_widget.update_modules(*complete_modules)
-            self.notenschnitt_widget.update_grade(average_grade, 2.5)  # 2.5 als Ziel-Schwelle
+            self.notenschnitt_widget.update_grade(average_grade, StudyProgramService.get_target_average_grade(self.study_program))  # 2.5 als Ziel-Schwelle
             self.credit_points_widget.update_credit_points(credit_points)
             self.semester_bar_chart_widget.update_data(modules_per_semester)
         else:
             # Widgets zum ersten Mal erzeugen
             self.next_exam_widget = NextExamWidget(next_exam)
             self.complete_modules_widget = CompletedModulesWidget(*complete_modules)
-            self.notenschnitt_widget = AverageGradeWidget(average_grade)
+            self.notenschnitt_widget = AverageGradeWidget(average_grade, StudyProgramService.get_target_average_grade(self.study_program))
             self.credit_points_widget = CreditPointsWidget(credit_points)
             self.semester_bar_chart_widget = SemesterBarChartWidget(modules_per_semester)
 

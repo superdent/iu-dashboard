@@ -1,6 +1,6 @@
 BESTANDEN = "bestanden"
 NICHT_BESTANDEN = "nicht bestanden"
-NICHT_BEGONNEN = "nicht begonnen"
+NICHT_BEGONNEN = "offen"
 IN_ARBEIT = "in Arbeit"
 
 class Module:

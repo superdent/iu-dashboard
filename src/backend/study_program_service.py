@@ -6,6 +6,7 @@ from typing import Optional, Tuple, Dict, List
 
 from backend.study_data_loader import StudyDataLoader
 from backend.study_data_writer import StudyDataWriter
+from config import ZIEL_ID_DURCHSCHNITTSNOTE
 
 
 class StudyProgramService:
@@ -38,28 +39,32 @@ class StudyProgramService:
         return sum(module.ects_points for module in study_program.modules if module.state == BESTANDEN)
 
     @staticmethod
-    def get_modules_per_semester(study_program: StudyProgram) -> Dict[int, Tuple[int, int]]:
+    def get_modules_per_semester(study_program: StudyProgram) -> Dict[int, Tuple[int, int, int]]:
         """
-        Gibt ein Dictionary zurück, das die Anzahl bestandener und nicht bestandener Module pro Semester enthält.
-        Format: {semester_id: (bestandene, nicht bestandene)}
+        Gibt ein Dictionary zurück, das die Anzahl bestandener, nicht bestandener und nicht begonnener Module pro Semester enthält.
+        Format: {semester_id: (bestandene, nicht bestandene, nicht begonnene)}
         """
         semester_data = {}
 
         for module in study_program.modules:
             semester_id = module.semester_id
             is_completed = module.state == BESTANDEN
+            is_failed = module.state == NICHT_BESTANDEN
+            is_not_started = module.state == NICHT_BEGONNEN
 
             if semester_id not in semester_data:
-                semester_data[semester_id] = (0, 0)
+                semester_data[semester_id] = (0, 0, 0)
 
-            completed, not_completed = semester_data[semester_id]
+            completed, not_completed, not_started = semester_data[semester_id]
 
             if is_completed:
                 completed += 1
-            else:
+            elif is_failed:
                 not_completed += 1
+            elif is_not_started:
+                not_started += 1
 
-            semester_data[semester_id] = (completed, not_completed)
+            semester_data[semester_id] = (completed, not_completed, not_started)
 
         return semester_data
 
@@ -86,6 +91,8 @@ class StudyProgramService:
                 grade = float(exam_data["grade"])  # Sicherstellen, dass es eine Zahl ist
                 if grade <= 4:
                     StudyProgramService.mark_module_as_passed(exam_data["module_id"], grade, exam_data["exam_date"])
+                else:
+                    StudyProgramService.mark_module_as_failed(exam_data["module_id"], grade, exam_data["exam_date"])
             except ValueError:
                 pass  # Falls die Note unerwartet nicht konvertierbar ist, ignorieren
 
@@ -99,9 +106,29 @@ class StudyProgramService:
         StudyDataWriter.update_module_status(module_id, BESTANDEN, exam_date)
 
     @staticmethod
+    def mark_module_as_failed(module_id: int, grade: float, exam_date: str):
+        """Setzt ein Modul auf 'NICHT_BESTANDEN'."""
+
+        # Modul als nicht bestanden markieren und Prüfungsdatum speichern
+        StudyDataWriter.update_module_status(module_id, NICHT_BESTANDEN, exam_date)
+
+    @staticmethod
     def reload_study_programs():
         """Lädt die Studienprogramme neu und gibt sie zurück."""
         study_data_loader=StudyDataLoader()
         study_data_loader.load_data()
         study_programs = study_data_loader.get_study_programs()
         return study_programs
+
+    @staticmethod
+    def get_study_target(study_program, target_id: int):
+        """Gibt den Wert eines Studienziels anhand der Ziel-ID zurück, falls vorhanden."""
+        for target in study_program.targets:
+            if target.target_id == target_id:
+                return target.target
+        return None  # Falls kein Ziel mit dieser ID existiert
+
+    @staticmethod
+    def get_target_average_grade(study_program):
+        """Gibt das Studienziel für die Durchschnittsnote zurück, falls vorhanden."""
+        return StudyProgramService.get_study_target(study_program, ZIEL_ID_DURCHSCHNITTSNOTE)
