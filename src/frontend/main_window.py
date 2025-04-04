@@ -54,7 +54,7 @@ class MainApp(QMainWindow):
         modules_per_semester = StudyProgramService.get_modules_per_semester(self.study_program)
 
         # Falls Widgets existieren, nur aktualisieren
-        if hasattr(self, "next_exam_widget"):
+        if self.next_exam_widget is not None:
             self.next_exam_widget.update_exam(next_exam)
             self.complete_modules_widget.update_modules(*complete_modules)
             self.notenschnitt_widget.update_grade(average_grade, StudyProgramService.get_target_average_grade(self.study_program))  # 2.5 als Ziel-Schwelle
