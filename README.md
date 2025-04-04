@@ -1,4 +1,4 @@
-# IU Dashboard
+# IU Dashboard - Installationsanleitung
 
 Dieses Projekt ist ein Python-basiertes Dashboard zur Visualisierung von Studienfortschritten.
 
