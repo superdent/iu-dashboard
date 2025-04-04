@@ -1,10 +1,11 @@
 import sys
 
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QAction, QMenu, QDialog
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QAction, QMenu, QDialog, QDesktopWidget
 
 from frontend.add_exam_dialog import AddExamDialog
 from frontend.complete_modules_widget import CompletedModulesWidget
 from frontend.credit_points_widget import CreditPointsWidget
+from frontend.edit_exam_dialog import EditExamDialog
 from frontend.next_exam_widget import NextExamWidget
 from frontend.average_grade_widget import AverageGradeWidget
 from backend.study_program_service import StudyProgramService
@@ -17,7 +18,15 @@ class MainApp(QMainWindow):
 
         # Fenster-Konfiguration
         self.setWindowTitle("Studien Dashboard")
-        self.setGeometry(100, 100, 800, 600)
+
+        screen = QDesktopWidget().availableGeometry()
+        width = int(screen.width() * 0.75)
+        height = int(screen.height() * 0.75)
+        self.resize(width, height)
+        self.move(
+            (screen.width() - width) // 2,
+            (screen.height() - height) // 2
+        )
 
         self.study_program = study_programs[0]  # TODO: Auswahl des study_programs implementieren
 
@@ -61,8 +70,8 @@ class MainApp(QMainWindow):
 
             # Hauptlayout
             haupt_layout = QVBoxLayout()
-            haupt_layout.addLayout(erste_zeile_layout)
-            haupt_layout.addWidget(self.semester_bar_chart_widget)
+            haupt_layout.addLayout(erste_zeile_layout, stretch=1)
+            haupt_layout.addWidget(self.semester_bar_chart_widget, stretch=2)
             self.layout = haupt_layout
 
             # Zentrales Widget setzen
@@ -75,19 +84,30 @@ class MainApp(QMainWindow):
         exams_menu = QMenu("Prüfungen", self)
         add_exam_action = QAction("Prüfung anlegen", self)
         add_exam_action.triggered.connect(self._open_add_exam_dialog)
-
         exams_menu.addAction(add_exam_action)
+        edit_exam_action = QAction("Prüfung bearbeiten", self)
+        edit_exam_action.triggered.connect(self._open_edit_exam_dialog)
+        exams_menu.addAction(edit_exam_action)
         menu_bar.addMenu(exams_menu)
 
     def _open_add_exam_dialog(self):
-        print("Dialog wird geöffnet")
         modules = StudyProgramService.get_all_modules(self.study_program)
-        dialog = AddExamDialog(modules)
+        dialog = AddExamDialog(modules, self)
         dialog.show()
         if dialog.exec_() == QDialog.Accepted:
             exam_data = dialog.get_exam_data()
             print("Neue Prüfung:", exam_data)
             StudyProgramService.save_exam(self.study_program, exam_data)
+            self.refresh_gui()  # Nach dem Speichern aktualisieren
+
+    def _open_edit_exam_dialog(self):
+        exams = StudyProgramService.get_exams(self.study_program)
+        dialog = EditExamDialog(exams, self)
+        dialog.show()
+        if dialog.exec_() == QDialog.Accepted:
+            exam_data = dialog.get_exam_data()
+            print("Prüfung bearbeitet:", exam_data)
+            StudyProgramService.update_exam(self.study_program, exam_data)
             self.refresh_gui()  # Nach dem Speichern aktualisieren
 
     def refresh_gui(self):

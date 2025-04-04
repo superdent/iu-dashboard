@@ -36,6 +36,31 @@ class StudyDataWriter:
             writer.writerow(new_exam)
 
     @staticmethod
+    def update_exam(updated_exam_data: dict):
+        """Aktualisiert eine bestehende Prüfung in der CSV-Datei."""
+
+        updated_exams = []
+
+        if os.path.exists(PRUEFUNG_FILE):
+            with open(PRUEFUNG_FILE, 'r', encoding='utf-8') as file:
+                reader = csv.DictReader(file, delimiter=';')
+                for row in reader:
+                    if row["id"] == str(updated_exam_data["exam_id"]):
+                        # Geänderte Daten übernehmen
+                        row["modul_id"] = str(updated_exam_data["module_id"])
+                        row["pruef_art"] = updated_exam_data["exam_type"]
+                        row["pruef_datum"] = updated_exam_data["exam_date"]
+                        row["note"] = updated_exam_data["grade"] if updated_exam_data["grade"] else ""
+                    updated_exams.append(row)
+
+        # Datei überschreiben mit aktualisierten Daten
+        with open(PRUEFUNG_FILE, 'w', encoding='utf-8', newline='') as file:
+            fieldnames = ["id", "modul_id", "pruef_art", "pruef_datum", "note"]
+            writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=';')
+            writer.writeheader()
+            writer.writerows(updated_exams)
+
+    @staticmethod
     def update_module_status(module_id: int, new_status: str, exam_date: str = None):
         """Aktualisiert den Status eines Moduls in der CSV-Datei.
 

@@ -1,5 +1,5 @@
 from backend.models.study_program import StudyProgram
-from backend.models.module import *
+from backend.models.module import BESTANDEN, NICHT_BESTANDEN, NICHT_BEGONNEN
 
 from datetime import date
 from typing import Optional, Tuple, Dict, List
@@ -39,6 +39,19 @@ class StudyProgramService:
         return sum(module.ects_points for module in study_program.modules if module.state == BESTANDEN)
 
     @staticmethod
+    def get_target_average_grade(study_program):
+        """Gibt das Studienziel für die Durchschnittsnote zurück, falls vorhanden."""
+        return StudyProgramService.get_study_target(study_program, ZIEL_ID_DURCHSCHNITTSNOTE)
+
+    @staticmethod
+    def get_study_target(study_program, target_id: int):
+        """Gibt den Wert eines Studienziels anhand der Ziel-ID zurück, falls vorhanden."""
+        for target in study_program.targets:
+            if target.target_id == target_id:
+                return target.target
+        return None  # Falls kein Ziel mit dieser ID existiert
+
+    @staticmethod
     def get_modules_per_semester(study_program: StudyProgram) -> Dict[int, Tuple[int, int, int]]:
         """
         Gibt ein Dictionary zurück, das die Anzahl bestandener, nicht bestandener und nicht begonnener Module pro Semester enthält.
@@ -74,29 +87,53 @@ class StudyProgramService:
         return [(module.module_id, module.module_name) for module in study_program.modules]
 
     @staticmethod
+    def get_exams(study_program: StudyProgram) -> List[dict]:
+        """ Liefert die Pruefungen des Studienprogramms als Liste von Dicts."""
+        exams = []
+        for module in study_program.modules:
+            for exam in module.exams:
+                exams.append({
+                    "exam_id": exam.id,
+                    "module_id": module.module_id,
+                    "module_name": module.module_name,
+                    "exam_type": exam.type_of_exam,
+                    "exam_date": exam.exam_date,
+                    "grade": exam.grade
+                })
+        exams.sort(key=lambda x: x["exam_date"] or date.min, reverse=True)
+        return exams
+
+    @staticmethod
     def save_exam(study_program: StudyProgram, exam_data: dict):
         """Speichert eine neue Prüfung über den StudyDataWriter."""
-
-        # Validierung: Modul-ID muss existieren
-        module_ids = {module.module_id for module in study_program.modules}
-        if exam_data["module_id"] not in module_ids:
-            raise ValueError(f"Ungültige Modul-ID: {exam_data['module_id']}")
-
-        # Speicherung der Prüfung
         StudyDataWriter.save_exam(exam_data)
+        StudyProgramService._process_exam_data(exam_data)
+        StudyProgramService.reload_study_programs()
 
-        # Falls eine Note vorhanden ist und ≤ 4, Modul als bestanden markieren
+    @staticmethod
+    def update_exam(study_program: StudyProgram, exam_data: dict):
+        """Aktualisiert eine bestehende Prüfung über den StudyDataWriter."""
+        StudyDataWriter.update_exam(exam_data)
+        StudyProgramService._process_exam_data(exam_data)
+        StudyProgramService.reload_study_programs()
+
+    @staticmethod
+    def _process_exam_data(exam_data: dict):
+        """Verarbeitet Noten-Logik und aktualisiert ggf. den Modulstatus."""
+
         if exam_data["grade"] is not None:
             try:
-                grade = float(exam_data["grade"])  # Sicherstellen, dass es eine Zahl ist
+                grade = float(exam_data["grade"])
                 if grade <= 4:
-                    StudyProgramService.mark_module_as_passed(exam_data["module_id"], grade, exam_data["exam_date"])
+                    StudyProgramService.mark_module_as_passed(
+                        exam_data["module_id"], grade, exam_data["exam_date"]
+                    )
                 else:
-                    StudyProgramService.mark_module_as_failed(exam_data["module_id"], grade, exam_data["exam_date"])
+                    StudyProgramService.mark_module_as_failed(
+                        exam_data["module_id"], grade, exam_data["exam_date"]
+                    )
             except ValueError:
-                pass  # Falls die Note unerwartet nicht konvertierbar ist, ignorieren
-
-        StudyProgramService.reload_study_programs()
+                pass  # Ungültige Note ignorieren
 
     @staticmethod
     def mark_module_as_passed(module_id: int, grade: float, exam_date: str):
@@ -119,16 +156,3 @@ class StudyProgramService:
         study_data_loader.load_data()
         study_programs = study_data_loader.get_study_programs()
         return study_programs
-
-    @staticmethod
-    def get_study_target(study_program, target_id: int):
-        """Gibt den Wert eines Studienziels anhand der Ziel-ID zurück, falls vorhanden."""
-        for target in study_program.targets:
-            if target.target_id == target_id:
-                return target.target
-        return None  # Falls kein Ziel mit dieser ID existiert
-
-    @staticmethod
-    def get_target_average_grade(study_program):
-        """Gibt das Studienziel für die Durchschnittsnote zurück, falls vorhanden."""
-        return StudyProgramService.get_study_target(study_program, ZIEL_ID_DURCHSCHNITTSNOTE)

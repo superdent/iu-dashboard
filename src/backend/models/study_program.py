@@ -1,4 +1,4 @@
-from backend.models.module import * 
+from backend.models.module import BESTANDEN
 
 class StudyProgram:
     def __init__(self, study_program_id, study_program_name):

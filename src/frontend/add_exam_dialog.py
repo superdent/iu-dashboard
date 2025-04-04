@@ -3,11 +3,11 @@ from PyQt5.QtWidgets import QDialog, QVBoxLayout, QGridLayout, QLabel, QLineEdit
 from PyQt5.QtCore import QDate
 
 class AddExamDialog(QDialog):
-    def __init__(self, modules):
-        super().__init__()
+    def __init__(self, modules, parent=None):
+        super().__init__(parent)
 
         self.setWindowTitle("Neue Prüfung anlegen")
-        self.setFixedSize(300, 200)
+        self.adjust_size_and_position()
 
         layout = QVBoxLayout()
         form_layout = QGridLayout()
@@ -66,3 +66,16 @@ class AddExamDialog(QDialog):
             "exam_date": self.exam_date_input.date().toString("dd.MM.yyyy"),
             "grade": self.grade_input.text() if self.grade_input.text() else None
         }
+
+    def adjust_size_and_position(self):
+        parent = self.parent()
+        if parent:
+            parent_width = parent.width()
+            dialog_width = int(parent_width * 0.5)
+            self.resize(dialog_width, 200)
+
+            parent_pos = parent.pos()
+            x = parent_pos.x() + (parent_width - dialog_width) // 2
+            y = parent_pos.y() + 100  # etwas unterhalb der Titelleiste
+            self.move(x, y)
+
