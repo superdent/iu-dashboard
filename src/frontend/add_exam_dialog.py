@@ -1,6 +1,6 @@
-from PyQt5.QtWidgets import QDialog, QVBoxLayout, QGridLayout, QLabel, QLineEdit, QComboBox, QDateEdit, QPushButton, \
-    QDialogButtonBox
 from PyQt5.QtCore import QDate
+from PyQt5.QtWidgets import QDialog, QVBoxLayout, QGridLayout, QLabel, QLineEdit, QComboBox, QDateEdit, QDialogButtonBox
+
 
 class AddExamDialog(QDialog):
     def __init__(self, modules, parent=None):
@@ -45,7 +45,9 @@ class AddExamDialog(QDialog):
 
         # Buttons
         button_box = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
+        # noinspection PyUnresolvedReferences
         button_box.accepted.connect(self.accept)
+        # noinspection PyUnresolvedReferences
         button_box.rejected.connect(self.reject)
         layout.addWidget(button_box)
         self.setLayout(layout)

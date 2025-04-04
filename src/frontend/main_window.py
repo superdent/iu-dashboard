@@ -13,10 +13,18 @@ from frontend.semester_bar_chart_widget import SemesterBarChartWidget
 
 
 class MainApp(QMainWindow):
+    # noinspection PyShadowingNames
     def __init__(self, study_programs):
         super().__init__()
 
         # Fenster-Konfiguration
+        self.next_exam_widget = None
+        self.complete_modules_widget = None
+        self.notenschnitt_widget = None
+        self.credit_points_widget = None
+        self.semester_bar_chart_widget = None
+        self.layout = None
+        self.study_programs = None
         self.setWindowTitle("Studien Dashboard")
 
         screen = QDesktopWidget().availableGeometry()
@@ -83,9 +91,11 @@ class MainApp(QMainWindow):
         menu_bar = self.menuBar()
         exams_menu = QMenu("Prüfungen", self)
         add_exam_action = QAction("Prüfung anlegen", self)
+        # noinspection PyUnresolvedReferences
         add_exam_action.triggered.connect(self._open_add_exam_dialog)
         exams_menu.addAction(add_exam_action)
         edit_exam_action = QAction("Prüfung bearbeiten", self)
+        # noinspection PyUnresolvedReferences
         edit_exam_action.triggered.connect(self._open_edit_exam_dialog)
         exams_menu.addAction(edit_exam_action)
         menu_bar.addMenu(exams_menu)
@@ -97,7 +107,7 @@ class MainApp(QMainWindow):
         if dialog.exec_() == QDialog.Accepted:
             exam_data = dialog.get_exam_data()
             print("Neue Prüfung:", exam_data)
-            StudyProgramService.save_exam(self.study_program, exam_data)
+            StudyProgramService.save_exam(exam_data)
             self.refresh_gui()  # Nach dem Speichern aktualisieren
 
     def _open_edit_exam_dialog(self):
@@ -107,7 +117,7 @@ class MainApp(QMainWindow):
         if dialog.exec_() == QDialog.Accepted:
             exam_data = dialog.get_exam_data()
             print("Prüfung bearbeitet:", exam_data)
-            StudyProgramService.update_exam(self.study_program, exam_data)
+            StudyProgramService.update_exam(exam_data)
             self.refresh_gui()  # Nach dem Speichern aktualisieren
 
     def refresh_gui(self):
@@ -117,7 +127,13 @@ class MainApp(QMainWindow):
         self.setup_widgets()
 
 if __name__ == "__main__":
+    from backend.study_data_loader import StudyDataLoader
+    loader = StudyDataLoader()
+    loader.load_data()
+    study_programs = loader.get_study_programs()
+
     app = QApplication(sys.argv)
-    main_window = MainApp()
+    main_window = MainApp(study_programs)
     main_window.show()
     sys.exit(app.exec_())
+

@@ -1,4 +1,5 @@
 class Exam:
+    # noinspection PyShadowingBuiltins
     def __init__(self, id, module_id, type_of_exam, exam_date, grade):
         self.id = id
         self.module_id = module_id

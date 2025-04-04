@@ -1,5 +1,4 @@
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QGridLayout, QLabel, QLineEdit, QComboBox, QDateEdit, QDialogButtonBox
-from PyQt5.QtCore import QDate
 
 
 class EditExamDialog(QDialog):
@@ -19,6 +18,7 @@ class EditExamDialog(QDialog):
         for exam in exams:
             label = f'{exam["module_name"]} – {exam["exam_date"].strftime("%d.%m.%Y")}'
             self.exam_select.addItem(label, exam["exam_id"])
+        # noinspection PyUnresolvedReferences
         self.exam_select.currentIndexChanged.connect(self._fill_form_fields)
         form_layout.addWidget(self.exam_select, 0, 1)
 
@@ -52,7 +52,9 @@ class EditExamDialog(QDialog):
 
         # Buttons
         self.button_box = QDialogButtonBox(QDialogButtonBox.Save | QDialogButtonBox.Cancel)
+        # noinspection PyUnresolvedReferences
         self.button_box.accepted.connect(self.accept)
+        # noinspection PyUnresolvedReferences
         self.button_box.rejected.connect(self.reject)
         layout.addWidget(self.button_box)
 

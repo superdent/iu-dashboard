@@ -167,7 +167,7 @@ div.media {
 }
 
 .media-container--fullscreen {
-  grid-template-columns: 0px auto 0px;
+  grid-template-columns: 0 auto 0;
 }
 
 .media-container__nav--right,

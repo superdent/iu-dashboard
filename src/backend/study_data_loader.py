@@ -37,7 +37,8 @@ class StudyDataLoader:
         """Gibt die Liste der geladenen Studien zurück."""
         return self.study_programs
 
-    def _load_file(self, file_path, load_function):
+    @staticmethod
+    def _load_file(file_path, load_function):
         """Allgemeine Funktion zum Laden von Dateien mit Fehlerbehandlung."""
         if os.path.exists(file_path):
             try:
@@ -48,7 +49,8 @@ class StudyDataLoader:
         else:
             logging.warning(f"Datei nicht gefunden: {file_path}. Überspringe den Import.")
 
-    def _convert_value(self, value, data_type):
+    @staticmethod
+    def _convert_value(value, data_type):
         """Konvertiert den Wert in den angegebenen Datentyp."""
         if value in (None, "", " "):
             return None

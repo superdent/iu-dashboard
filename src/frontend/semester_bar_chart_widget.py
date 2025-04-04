@@ -2,7 +2,7 @@ import numpy as np
 from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.figure import Figure
-from backend.models.module import BESTANDEN, NICHT_BESTANDEN, NICHT_BEGONNEN
+
 
 class SemesterBarChartWidget(QWidget):
     def __init__(self, modules_per_semester: dict):

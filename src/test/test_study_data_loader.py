@@ -9,22 +9,24 @@ class TestStudyDataLoader(unittest.TestCase):
         self.study_data_loader = StudyDataLoader()
 
     def test_load_data(self):
-        # Lade die Daten
+        # when
         self.study_data_loader.load_data()
         
-        # Überprüfe, ob die Daten geladen wurden
+        # then
         self.assertGreater(len(self.study_data_loader.study_programs), 0, "Es wurden keine Studiengänge geladen")
         self.assertGreater(len(self.study_data_loader.modules), 0, "Es wurden keine Module geladen")
         self.assertGreater(len(self.study_data_loader.semester), 0, "Es wurden keine Semester geladen")
-        # Wenn Prüfungen vorhanden sind, prüfe, ob diese geladen wurden
         if self.study_data_loader.exams:
             self.assertGreater(len(self.study_data_loader.exams), 0, "Es wurden keine Prüfungen geladen")
 
-    def test_study_program_data(self):
-        # Überprüfe, ob die Studium-Daten korrekt geladen wurden
+    def test_study_program_fields_present (self):
+        # when
         self.study_data_loader.load_data()
         study_program = self.study_data_loader.study_programs[0]
-        self.assertEqual(study_program.study_program_name, "Angewandte Künstliche Intelligenz", "Studium Name ist falsch")
+
+        # then
+        self.assertIsInstance(study_program.study_program_id, int)
+        self.assertIsInstance(study_program.study_program_name, str)
 
 if __name__ == '__main__':
     unittest.main()

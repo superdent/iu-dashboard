@@ -88,7 +88,7 @@ class StudyProgramService:
 
     @staticmethod
     def get_exams(study_program: StudyProgram) -> List[dict]:
-        """ Liefert die Pruefungen des Studienprogramms als Liste von Dicts."""
+        """ Liefert die Prüfungen des Studienprogramms als Liste von Dicts."""
         exams = []
         for module in study_program.modules:
             for exam in module.exams:
@@ -100,18 +100,18 @@ class StudyProgramService:
                     "exam_date": exam.exam_date,
                     "grade": exam.grade
                 })
-        exams.sort(key=lambda x: x["exam_date"] or date.min, reverse=True)
+        exams.sort(key=lambda x: x["exam_date"], reverse=True)
         return exams
 
     @staticmethod
-    def save_exam(study_program: StudyProgram, exam_data: dict):
+    def save_exam(exam_data: dict):
         """Speichert eine neue Prüfung über den StudyDataWriter."""
         StudyDataWriter.save_exam(exam_data)
         StudyProgramService._process_exam_data(exam_data)
         StudyProgramService.reload_study_programs()
 
     @staticmethod
-    def update_exam(study_program: StudyProgram, exam_data: dict):
+    def update_exam(exam_data: dict):
         """Aktualisiert eine bestehende Prüfung über den StudyDataWriter."""
         StudyDataWriter.update_exam(exam_data)
         StudyProgramService._process_exam_data(exam_data)
@@ -126,24 +126,24 @@ class StudyProgramService:
                 grade = float(exam_data["grade"])
                 if grade <= 4:
                     StudyProgramService.mark_module_as_passed(
-                        exam_data["module_id"], grade, exam_data["exam_date"]
+                        exam_data["module_id"], exam_data["exam_date"]
                     )
                 else:
                     StudyProgramService.mark_module_as_failed(
-                        exam_data["module_id"], grade, exam_data["exam_date"]
+                        exam_data["module_id"], exam_data["exam_date"]
                     )
             except ValueError:
                 pass  # Ungültige Note ignorieren
 
     @staticmethod
-    def mark_module_as_passed(module_id: int, grade: float, exam_date: str):
+    def mark_module_as_passed(module_id: int, exam_date: str):
         """Setzt ein Modul auf 'BESTANDEN'."""
 
         # Modul als bestanden markieren und Prüfungsdatum speichern
         StudyDataWriter.update_module_status(module_id, BESTANDEN, exam_date)
 
     @staticmethod
-    def mark_module_as_failed(module_id: int, grade: float, exam_date: str):
+    def mark_module_as_failed(module_id: int, exam_date: str):
         """Setzt ein Modul auf 'NICHT_BESTANDEN'."""
 
         # Modul als nicht bestanden markieren und Prüfungsdatum speichern

@@ -18,6 +18,7 @@ class Main:
         logging.info("Daten laden beendet")
 
         # Start der GUI
+        # noinspection PyShadowingNames
         app = QApplication(sys.argv)
         main_window = MainApp(study_programs)
         main_window.show()

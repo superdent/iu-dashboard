@@ -29,6 +29,7 @@ class StudyDataWriter:
         # Schreiben der neuen Zeile in die CSV-Datei
         file_exists = os.path.exists(PRUEFUNG_FILE)
         with open(PRUEFUNG_FILE, 'a', encoding='utf-8', newline='') as file:
+            # noinspection PyTypeChecker
             writer = csv.DictWriter(file, fieldnames=["id", "modul_id", "pruef_art", "pruef_datum", "note"],
                                     delimiter=';')
             if not file_exists:
@@ -54,8 +55,9 @@ class StudyDataWriter:
                     updated_exams.append(row)
 
         # Datei überschreiben mit aktualisierten Daten
-        with open(PRUEFUNG_FILE, 'w', encoding='utf-8', newline='') as file:
+        with open(PRUEFUNG_FILE, 'w', encoding='utf-8', newline='') as file: # type: ignore[arg-type]
             fieldnames = ["id", "modul_id", "pruef_art", "pruef_datum", "note"]
+            # noinspection PyTypeChecker
             writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=';')
             writer.writeheader()
             writer.writerows(updated_exams)
@@ -81,9 +83,10 @@ class StudyDataWriter:
                     updated_modules.append(row)
 
         # Änderungen in die Datei zurückschreiben
-        with open(MODULE_FILE, 'w', encoding='utf-8', newline='') as file:
+        with open(MODULE_FILE, 'w', encoding='utf-8', newline='') as file: # type: ignore[arg-type]
             fieldnames = ["modul_id", "modul_kuerzel", "modul_name", "semester_id", "ECTS_Punkte", "status",
                           "pruefungsdatum"]
+            # noinspection PyTypeChecker
             writer = csv.DictWriter(file, fieldnames=fieldnames, delimiter=';')
             writer.writeheader()
             writer.writerows(updated_modules)
